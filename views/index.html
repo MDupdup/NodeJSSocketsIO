@@ -84,8 +84,11 @@
     
         var socket = io();
     
+        var senderID = '';
+
         submitBtn.addEventListener('click', () => {
-            socket.emit('message', { color: color, id: socket.id, nick: nickname.value, message: messageInput.value });
+            console.log(senderID);
+            socket.emit('message', { color: color, id: socket.id, nick: nickname.value, message: messageInput.value, sender: senderID });
 
             messagesDiv.innerHTML += '<div class="outgoing_msg"><div class="sent_msg"><h6>' + nickname.value + '</h6><p style="background-color: ' + color + ';">' + messageInput.value + '</p><span class="time_date">' + date.getHours() + ':' + date.getMinutes() + '</span></div></div>';;
 
@@ -95,7 +98,7 @@
         
         socket.on('message', data => {
             console.log('message received: ', data);
-            
+
             var incomingMessage = '<div class="incoming_msg"><div class="received_msg"><div class="received_withd_msg"><h6>' + data.nick + '</h6><p style="background-color: ' + data.color + '; color: #FFF;">' + data.message + '</p><span class="time_date">' + date.getHours() + ':' + date.getMinutes() + '</span></div></div></div>';
             var outcomingMessage = '<div class="outgoing_msg"><div class="sent_msg"><h6>' + nickname.value + '</h6><p style="background-color: ' + color + ';">' + messageInput.value + '</p><span class="time_date">' + date.getHours() + ':' + date.getMinutes() + '</span></div></div>';
 
@@ -113,6 +116,7 @@
             chatItem.innerHTML = '<div id="chatItemAll" class="chat_list active_chat"><div class="chat_people"><div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"></div><div class="chat_ib"><h5>Chat All <span id="chatAllDate" class="chat_date">Dec 25</span></h5><p id="chatAll"></p></div></div></div>';
             
             document.getElementById('chatItemAll').addEventListener('click', () => {
+                console.log('issou');
                 messagesDiv.style.display = 'inline';
             });
 
@@ -121,14 +125,23 @@
             Object.keys(users).forEach((userId) => {
                 if(userId !== socket.id) 
                 {
-                    var lol = '<div id="socket'+ userId+'" class="chat_list"><div class="chat_people"><div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"></div><div class="chat_ib"><h5>' +  users[userId] + ' <span id="chatDate" class="chat_date">Dec 25</span></h5><p id="chatAll"></p></div></div></div>';
+                    var lol = '<div class="chat_list socket"><div class="chat_people"><div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"></div><div class="chat_ib"><h5>' +  users[userId] + ' <span id="chatDate" class="chat_date">Dec 25</span></h5><p id="chatAll"></p></div></div></div>';
                     chatItem.innerHTML += lol;
 
-                    document.getElementById('socket' + userId).addEventListener('click', () => {
-                        messagesDiv.style.display = 'none';
-                    });
+                    senderID = userId;
                 }
-            })
+            });
+
+            /*for(var j = 0; j < document.getElementsByClassName("socket").length; j++)
+            {
+                document.getElementsByClassName("socket").addEventListener('click', () => {
+                    for(var i = 0; i < document.getElementsByClassName("active_chat"); i++)
+                    {
+                        document.getElementsByClassName("active_chat")[i].remove("active_chat");
+                    }
+                    document.getElementsByClassName("socket")[j].classList.add("active_chat");
+                });
+            }*/
         });
 
         socket.emit('loaded', 'page loaded!!');

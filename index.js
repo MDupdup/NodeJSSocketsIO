@@ -13,6 +13,10 @@ io.on('connection', socket => {
     });
 
     socket.on('message', (data) => {
+        if(data.senderID !== '')
+        {
+            socket.to(data.senderID).emit('message', data);
+        }
         socket.broadcast.emit('message', data);
     });
 
