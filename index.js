@@ -13,11 +13,17 @@ io.on('connection', socket => {
     });
 
     socket.on('message', (data) => {
-        if(data.senderID !== '')
-        {
-            socket.to(data.senderID).emit('message', data);
+        if(data.sender != null)
+        {   
+            console.log('this is a private message sent to ', users[data.sender]);
+            socket.broadcast.to(data.sender).emit('message', data);
         }
-        socket.broadcast.emit('message', data);
+        else
+        {
+            console.log('this is a broadcast message');
+            socket.broadcast.emit('message', data);
+        }
+        
     });
 
     socket.on('username', (nick) => {
