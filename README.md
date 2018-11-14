@@ -1,6 +1,6 @@
 # TP NodeJS SocketsIO
 
-_Il manque le fonctionnement des MPs_
+_Le fonctionnement des MPs est disponible sur la branche "withmps", push ce mercredi 14 novembre._
 
 Malo Dupont
 
