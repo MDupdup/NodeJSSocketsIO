@@ -1,6 +1,6 @@
 # TP NodeJS SocketsIO
 
-_Il manque le fonctionnement des MPs_
+_MPs fonctionnels_
 
 Malo Dupont
 
